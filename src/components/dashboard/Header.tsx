@@ -1,8 +1,7 @@
-import { Activity, LogOut } from 'lucide-react';
+import { LogOut, Target } from 'lucide-react';
 import { Avatar, AvatarImage, AvatarFallback } from '../ui/avatar';
 import { manageAuth } from '@/app/actions/manage-auth';
 import { Button } from '../ui/button';
-import Image from 'next/image';
 
 interface HeaderProps {
     userName: string;
@@ -13,7 +12,8 @@ export function Header({ userName, avatarSrc }: HeaderProps) {
     return (
         <header className="flex sm:hidden items-center justify-between p-4 bg-background border-b border-zinc-700">
             <div className="flex items-center gap-4">
-                <Image src='/logo-white.png' alt="Logo" width={60} height={60} />
+                <Target className="text-primary size-8" />
+                <span className="text-lg font-bold">ClickFlow</span>
             </div>
             <div className='flex items-center gap-3'>
                 <Avatar className="size-8">

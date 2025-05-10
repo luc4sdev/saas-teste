@@ -2,12 +2,9 @@ import { Button } from "@/components/ui/button";
 import { auth } from "@/lib/auth";
 import { Home, AlertTriangle } from "lucide-react";
 import Link from "next/link";
-import { getCustomerId } from "./server/get-customer-data";
 
 export default async function NotFound() {
     const session = await auth()
-
-    const customerId = await getCustomerId(session?.user?.id as string)
 
     return (
         <div className="flex flex-col items-center justify-center min-h-screen bg-background text-foreground p-4">
@@ -26,7 +23,7 @@ export default async function NotFound() {
                 </p>
 
                 <Button asChild className="mt-6">
-                    <Link href={(session && customerId) ? `/${customerId}` : '/'} className="flex items-center gap-2">
+                    <Link href={(session) ? `/dashboard` : '/'} className="flex items-center gap-2">
                         <Home className="w-5 h-5" />
                         Voltar para a página inicial
                     </Link>

@@ -6,7 +6,7 @@ export async function manageAuth() {
 
     if (!session) {
         return await signIn("google", {
-            redirectTo: "/"
+            redirectTo: "/dashboard"
         })
     }
 

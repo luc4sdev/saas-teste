@@ -1,44 +1,32 @@
 "use client";
-import { Settings, User, LogOut, Dumbbell, Gift, History } from "lucide-react";
+import { Settings, User, LogOut, Home, Target } from "lucide-react";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { usePathname } from "next/navigation";
 import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar";
 import { manageAuth } from "@/app/actions/manage-auth";
-import Image from "next/image";
 
 interface NavBarProps {
-    customerId: string;
     userName: string;
     avatarSrc: string;
 }
 
-export default function Navbar({ customerId, userName, avatarSrc }: NavBarProps) {
+export default function Navbar({ userName, avatarSrc }: NavBarProps) {
     const pathname = usePathname();
 
     const menuItems = [
         {
-            href: `/${customerId}`,
-            icon: <Dumbbell className="w-5 h-5" />,
-            label: "Treino"
+            href: `/dashboard`,
+            icon: <Home className="w-5 h-5" />,
+            label: "Dashboard"
         },
         {
-            href: `/${customerId}/profile`,
+            href: `/dashboard/profile`,
             icon: <User className="w-5 h-5" />,
             label: "Perfil",
         },
         {
-            href: `/${customerId}/workouts`,
-            icon: <Gift className="w-5 h-5" />,
-            label: "Bônus",
-        },
-        {
-            href: `/${customerId}/history`,
-            icon: <History className="w-5 h-5" />,
-            label: "Histórico",
-        },
-        {
-            href: `/${customerId}/settings`,
+            href: `/dashboard/settings`,
             icon: <Settings className="w-5 h-5" />,
             label: "Configurações",
         },
@@ -67,8 +55,9 @@ export default function Navbar({ customerId, userName, avatarSrc }: NavBarProps)
             <nav className="hidden sm:flex sm:flex-col sm:w-64 sm:h-screen sm:border-r sm:border-gray-200 sm:bg-background sm:fixed sm:left-0 sm:top-0 sm:z-50">
                 <div className="p-4">
                     <div className="flex items-center gap-4 mb-6">
-                        <div className="w-full flex justify-center items-center">
-                            <Image src='/logo-white.png' alt="Logo" width={80} height={80} />
+                        <div className="w-full flex justify-center items-center gap-2">
+                            <Target className="text-primary size-12" />
+                            <span className="text-lg font-bold">ClickFlow</span>
                         </div>
                     </div>
                     <div className="space-y-2">

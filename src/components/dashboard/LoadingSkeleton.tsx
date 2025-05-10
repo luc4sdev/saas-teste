@@ -1,4 +1,4 @@
-import Image from "next/image";
+import { Target } from "lucide-react";
 
 export default function LoadingSkeleton() {
 
@@ -7,14 +7,7 @@ export default function LoadingSkeleton() {
             <div
                 className='transition-al ease-in-out animate-bounce'
             >
-                <Image
-                    src="/logo-white.png"
-                    alt="Carregando..."
-                    width={120}
-                    height={120}
-                    className="w-32 h-w-32 md:w-32 md:h-32 animate-pulse"
-                    priority
-                />
+                <Target className="text-primary size-52" />
             </div>
         </div>
     );

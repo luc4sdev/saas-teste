@@ -3,7 +3,7 @@
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { CircleCheck } from "lucide-react";
-import { CustomerData } from "@/app/server/get-customer-data";
+import { CustomerData } from "@/app/server/get-campaigns";
 import { useStripe } from "@/hooks/useStripe";
 import { useParams } from "next/navigation";
 
