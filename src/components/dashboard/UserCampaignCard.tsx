@@ -1,60 +1,98 @@
-"use client"
+'use client'
 
 import { CampaignDataWithUserEmail } from "@/app/server/get-campaigns"
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
-
+import { deleteCampaign } from "@/app/server/delete-campaign"
+import { Card, CardContent, CardFooter, CardHeader } from "@/components/ui/card"
+import { Button } from "../ui/button"
 import { format } from "date-fns"
 import { ptBR } from "date-fns/locale"
 import Link from "next/link"
-import { Button } from "../ui/button"
+import Image from "next/image"
+import { Trash } from "lucide-react"
+import { useState } from "react"
 
 interface CampaignCardProps {
     campaigns: CampaignDataWithUserEmail[]
 }
 
-export function UserCampaignCardList({ campaigns }: CampaignCardProps) {
+export function UserCampaignCardList({ campaigns: initialCampaigns }: CampaignCardProps) {
+    const [campaigns, setCampaigns] = useState(initialCampaigns)
+
+    const handleDelete = async (id: string, logoUrl?: string, imageUrl?: string) => {
+        const confirmed = confirm("Tem certeza que deseja excluir esta campanha?")
+        if (!confirmed) return
+
+        const result = await deleteCampaign(id, logoUrl, imageUrl)
+
+        if (result.success) {
+            setCampaigns(prev => prev.filter(c => c.id !== id))
+        } else {
+            alert(result.error || "Erro ao excluir campanha.")
+        }
+    }
+
     if (campaigns.length === 0) {
         return <p className="text-muted-foreground">Nenhuma campanha encontrada.</p>
     }
 
     return (
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
             {campaigns.map((campaign) => (
-                <Card key={campaign.id} className="hover:shadow-lg transition-shadow duration-300">
-                    <CardHeader>
-                        <CardTitle>{campaign.campaignName}</CardTitle>
-                        <CardDescription>
-                            Criado em{" "}
-                            {format(new Date(campaign.createdAt), "dd 'de' MMMM 'de' yyyy", {
+                <Card key={campaign.id} className="w-[320px] hover:shadow-xl transition relative">
+                    {/* Botão de deletar */}
+                    <button
+                        onClick={() => handleDelete(campaign.id, campaign.logoUrl, campaign.imageUrl)}
+                        className="absolute top-2 right-2 p-1 rounded-full bg-red-500 hover:bg-red-600 text-white z-10"
+                        title="Excluir campanha"
+                    >
+                        <Trash className="w-4 h-4" />
+                    </button>
+
+                    {/* Imagem de fundo (imageUrl) */}
+                    {campaign.imageUrl && (
+                        <CardHeader className="p-0 relative h-40">
+                            <Image
+                                src={campaign.imageUrl}
+                                alt="Imagem de fundo da campanha"
+                                fill
+                                className="rounded-t-lg object-cover"
+                            />
+                            {campaign.logoUrl && (
+                                <div className="absolute inset-0 flex items-center justify-center p-4">
+                                    <div className="relative w-20 h-20">
+                                        <Image
+                                            src={campaign.logoUrl}
+                                            alt="Logo da campanha"
+                                            fill
+                                            className="object-contain"
+                                        />
+                                    </div>
+                                </div>
+                            )}
+                        </CardHeader>
+                    )}
+
+                    <CardContent className="pt-4 space-y-2">
+                        <h2 className="text-lg font-bold">{campaign.campaignName}</h2>
+                        <p className="text-sm text-muted-foreground">📢 {campaign.headline}</p>
+                        <p className="text-sm text-muted-foreground">👤 Responsável: {campaign.contactName}</p>
+                        <p className="text-sm text-muted-foreground">
+                            📅 {format(new Date(campaign.createdAt), "dd/MM/yyyy", {
                                 locale: ptBR,
                             })}
-                        </CardDescription>
-                    </CardHeader>
-                    <CardContent className="text-sm text-muted-foreground space-y-1">
-                        <p>
-                            <span className="font-medium text-primary">Responsável:</span>{" "}
-                            {campaign.contactName}
                         </p>
-                        <p>
-                            <span className="font-medium text-primary">WhatsApp:</span>{" "}
-                            {campaign.whatsapp}
-                        </p>
-                        <p>
-                            <span className="font-medium text-primary">E-mail:</span>{" "}
-                            {campaign.email}
-                        </p>
-                        {campaign.headline && (
-                            <p>
-                                <span className="font-medium text-primary">Headline:</span>{" "}
-                                {campaign.headline}
-                            </p>
-                        )}
                     </CardContent>
-                    <Link href={`/landing/${campaign.id}`} passHref>
-                        <Button className="w-full mt-4">
-                            Ver Landing Page
-                        </Button>
-                    </Link>
+
+                    <CardFooter className="flex justify-between items-center">
+                        <span className="text-sm text-foreground">
+                            Contato: {campaign.whatsapp}
+                        </span>
+                        <Link href={`/landing/${campaign.id}`} passHref>
+                            <Button variant="outline" size="sm">
+                                Ver Landing
+                            </Button>
+                        </Link>
+                    </CardFooter>
                 </Card>
             ))}
         </div>

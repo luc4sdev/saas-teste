@@ -30,7 +30,7 @@ export async function Hero() {
                     </h2>
                     {session ? (
                         <div className="flex items-center justify-center md:justify-start gap-2 w-full mt-10">
-                            <Link href="/create">
+                            <Link href="/dashboard">
                                 <Button size="xl" className="font-extrabold">
                                     Comece Agora
                                 </Button>

@@ -9,8 +9,8 @@ export type CampaignData = {
     email: string;
     headline: string;
     subheadline?: string;
-    logo?: string;
-    image?: string;
+    logoUrl?: string;
+    imageUrl?: string;
     createdAt: number;
 }
 
