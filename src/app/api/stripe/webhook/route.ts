@@ -1,6 +1,5 @@
 import { db } from "@/lib/firebase"
 import stripe from "@/lib/stripe"
-import { htmlEmail } from "@/lib/utils"
 import { NextRequest, NextResponse } from "next/server"
 import Stripe from "stripe"
 

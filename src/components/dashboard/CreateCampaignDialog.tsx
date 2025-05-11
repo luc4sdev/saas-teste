@@ -44,7 +44,6 @@ export function CreateCampaignDialog() {
         handleSubmit,
         reset,
         formState: { errors },
-        watch,
     } = useForm<CampaignFormData>({
         resolver: zodResolver(formSchema)
     })
@@ -63,8 +62,20 @@ export function CreateCampaignDialog() {
                 "logoInput"
             ) as HTMLInputElement;
 
-            if (!imagesInput.files?.length) return;
-            if (!logoInput.files?.length) return;
+            if (!logoInput.files?.length) {
+                toastMessage({
+                    message: 'Selecione uma Logo',
+                    type: "error"
+                })
+                return;
+            }
+            if (!imagesInput.files?.length) {
+                toastMessage({
+                    message: 'Selecione uma Imagem',
+                    type: "error"
+                })
+                return;
+            }
 
             const compressedFileLogo = await compressFiles(Array.from(logoInput.files));
             const compressedFileImage = await compressFiles(Array.from(imagesInput.files));
@@ -87,7 +98,10 @@ export function CreateCampaignDialog() {
                     type: 'success'
                 })
                 reset();
-                router.refresh();
+                setLogo(null);
+                setImage(null);
+                setIsDialogOpen(false);
+                window.location.reload();
             }
         } catch (error) {
             console.error('Erro ao criar campanha:', error)
@@ -97,7 +111,6 @@ export function CreateCampaignDialog() {
             })
         } finally {
             setLoading(false);
-            setIsDialogOpen(false);
         }
     }
 

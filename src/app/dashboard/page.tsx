@@ -23,7 +23,6 @@ const mockCampaigns = [
         imageUrl: "/landing-page.png",
         cta: "Converta com WhatsApp",
     },
-    // adicione mais mockups
 ];
 export default async function UserPage() {
     const session = await auth()
@@ -32,13 +31,13 @@ export default async function UserPage() {
     }
     const campaigns = await getCampaignsByUserId(session?.user?.id)
 
-    // if (!session?.user.isSubscribed) {
-    //     return (
-    //         <div className="flex flex-col gap-3 px-4 py-10">
-    //             {/* <Pricing customer={customerData} /> */}
-    //         </div>
-    //     );
-    // }
+    if (!session?.user.isSubscribed) {
+        return (
+            <div className="flex flex-col gap-3 px-4 py-10">
+                <Pricing />
+            </div>
+        );
+    }
 
 
     return (

@@ -14,10 +14,8 @@ export function useStripe() {
     }, [])
 
     async function createStripeCheckout({
-        metadata,
         planType
     }: {
-        metadata: any,
         planType: "monthly" | "quarterly" | "semiannual";
     }) {
         try {
@@ -26,7 +24,7 @@ export function useStripe() {
                 headers: {
                     "Content-Type": "application/json"
                 },
-                body: JSON.stringify({ metadata, planType })
+                body: JSON.stringify({ planType })
             })
             const data = await response.json()
 
@@ -38,17 +36,12 @@ export function useStripe() {
         }
     }
 
-    async function handleCreateStripePortal({
-        metadata,
-    }: {
-        metadata: any,
-    }) {
+    async function handleCreateStripePortal() {
         const response = await fetch("/api/stripe/create-portal", {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
-            },
-            body: JSON.stringify({ metadata })
+            }
         });
         const data = await response.json();
         window.location.href = data.url;

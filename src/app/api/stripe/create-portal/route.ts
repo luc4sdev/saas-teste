@@ -4,7 +4,6 @@ import stripe from "@/lib/stripe";
 import { NextRequest, NextResponse } from "next/server";
 
 export async function POST(req: NextRequest) {
-    const { metadata } = await req.json()
     const session = await auth();
     const userId = session?.user.id;
     if (!userId) {
@@ -18,7 +17,7 @@ export async function POST(req: NextRequest) {
     try {
         const portalSession = await stripe.billingPortal.sessions.create({
             customer: customerStripeId,
-            return_url: `${req.headers.get("origin")}/${metadata.customerId}`,
+            return_url: `${req.headers.get("origin")}/dashboard`,
         });
         return NextResponse.json({ url: portalSession.url });
     } catch (error) {

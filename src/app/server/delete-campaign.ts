@@ -8,19 +8,45 @@ export async function deleteCampaign(id: string, logoUrl?: string, imageUrl?: st
     if (!session?.user) return { error: 'Usuário não autenticado' }
 
     try {
+        const bucket = storage
         const filesToDelete: string[] = []
-        if (logoUrl) {
-            const logoPath = decodeURIComponent(new URL(logoUrl).pathname.split('/o/')[1])
-            filesToDelete.push(logoPath)
+
+        const extractPathFromUrl = (url: string) => {
+            try {
+                const path = decodeURIComponent(url)
+                    .replace('https://storage.googleapis.com/', '')
+                    .replace(/^[^/]+\//, '')
+                    .split('?')[0]
+                return path
+            } catch (error) {
+                console.error('Erro ao extrair caminho da URL:', error)
+                return null
+            }
         }
+
+        if (logoUrl) {
+            const path = extractPathFromUrl(logoUrl)
+            if (path) {
+                filesToDelete.push(path)
+            }
+        }
+
         if (imageUrl) {
-            const imagePath = decodeURIComponent(new URL(imageUrl).pathname.split('/o/')[1])
-            filesToDelete.push(imagePath)
+            const path = extractPathFromUrl(imageUrl)
+            if (path) {
+                filesToDelete.push(path)
+            }
         }
 
         await Promise.all(
-            filesToDelete.map(async (path) => {
-                await storage.file(path).delete().catch(() => null)
+            filesToDelete.map(async (filePath) => {
+                try {
+                    const file = bucket.file(filePath)
+                    await file.delete()
+                    console.log(`Arquivo ${filePath} deletado com sucesso`)
+                } catch (error) {
+                    console.error(`Erro ao deletar arquivo ${filePath}:`, error)
+                }
             })
         )
 

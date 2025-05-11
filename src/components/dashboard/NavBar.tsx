@@ -21,11 +21,6 @@ export default function Navbar({ userName, avatarSrc }: NavBarProps) {
             label: "Dashboard"
         },
         {
-            href: `/dashboard/profile`,
-            icon: <User className="w-5 h-5" />,
-            label: "Perfil",
-        },
-        {
             href: `/dashboard/settings`,
             icon: <Settings className="w-5 h-5" />,
             label: "Configurações",
@@ -56,7 +51,7 @@ export default function Navbar({ userName, avatarSrc }: NavBarProps) {
                 <div className="p-4">
                     <div className="flex items-center gap-4 mb-6">
                         <div className="w-full flex justify-center items-center gap-2">
-                            <Target className="text-primary size-12" />
+                            <Target className="text-primary size-10" />
                             <span className="text-lg font-bold">ClickFlow</span>
                         </div>
                     </div>

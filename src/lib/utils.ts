@@ -14,7 +14,7 @@ export function cn(...inputs: ClassValue[]) {
 
 export const toastMessage = ({ message, type }: ToastMessageProps) => {
   toast(message, {
-    position: 'top-left',
+    position: 'top-right',
     autoClose: 3000,
     hideProgressBar: true,
     closeOnClick: true,

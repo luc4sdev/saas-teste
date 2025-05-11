@@ -5,7 +5,7 @@ import { NextRequest, NextResponse } from "next/server"
 
 
 export async function POST(req: NextRequest) {
-    const { metadata, planType } = await req.json()
+    const { planType } = await req.json()
 
     let price: string | undefined;
     switch (planType) {
@@ -63,10 +63,9 @@ export async function POST(req: NextRequest) {
         }],
         mode: "subscription",
         payment_method_types: ["card"],
-        success_url: `${req.headers.get("origin")}/${metadata.customerId}`,
-        cancel_url: `${req.headers.get("origin")}/${metadata.customerId}`,
+        success_url: `${req.headers.get("origin")}/dashboard`,
+        cancel_url: `${req.headers.get("origin")}/dashboard`,
         client_reference_id: userId,
-        metadata,
     })
 
     return NextResponse.json({
